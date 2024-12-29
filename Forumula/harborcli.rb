@@ -1,4 +1,4 @@
-class Harbor < Formula
+class Harborcli < Formula
   desc "[Sandbox] Official Harbor CLI"
   homepage "https://github.com/goharbor/harbor-cli"
   url "https://github.com/goharbor/harbor-cli/archive/refs/tags/v0.0.2.tar.gz"
