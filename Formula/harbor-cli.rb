@@ -1,7 +1,7 @@
 class HarborCli < Formula
   desc "[Sandbox] Official Harbor CLI"
   homepage "https://github.com/goharbor/harbor-cli"
-  url "https://github.com/goharbor/harbor-cli/archive/refs/tags/v0.0.2.tar.gz"
+  url "https://github.com/goharbor/harbor-cli/archive/refs/tags/v0.0.3.tar.gz"
   license "Apache-2.0"
 
   depends_on "go" => :build
