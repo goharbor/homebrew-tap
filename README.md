@@ -1,4 +1,4 @@
-![harbor-3](https://github.com/goharbor/harbor-cli/assets/70086051/835ab686-1cce-4ac7-bc57-05a35c2b73cc)
+![image-removebg-preview](https://github.com/user-attachments/assets/22aac27e-31b8-42dc-8f0a-6ff46f2d9d3b)
 
 ## How to install?
 Install `harbor-cli` CLI on macOS using the following command:
