@@ -4,7 +4,7 @@
 Install `harbor-cli` CLI on macOS using the following command:
 
 ```sh
-brew install bupd/tap/harbor-cli
+brew install goharbor/tap/harbor-cli
 ```
 
 To learn more about `harbor-cli`, see <https://github.com/goharbor/harbor-cli>
@@ -16,8 +16,8 @@ If you would like to report an issue with this Homebrew tap, please use <https:/
 ## How to fix a broken tap? 🚰
 
 ```console
-brew untap bupd/tap
-brew install bupd/tap/harbor-cli
+brew untap goharbor/tap
+brew install goharbor/tap/harbor-cli
 ```
 
 ## Learn more about harbor-cli
