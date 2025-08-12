@@ -5,20 +5,20 @@
 class HarborCli < Formula
   desc "Harbor CLI for interacting with Harbor registry"
   homepage "https://goharbor.io"
-  version "0.0.5"
+  version "0.0.9"
 
   on_macos do
     if Hardware::CPU.intel?
-      url "https://github.com/bupd/harbor-cli/releases/download/v0.0.5/harbor_0.0.5_darwin_amd64.tar.gz"
-      sha256 "4a6a67ba1680c6e6a19f8af3d4d20218c325686d6a9c5ca5b1a38adaeee4fe99"
+      url "https://github.com/bupd/harbor-cli/releases/download/v0.0.9/harbor_0.0.9_darwin_amd64.tar.gz"
+      sha256 "b9d1dd292954b0b9fda62a223c601bd5100b24e555bb2a31c01ea92dc9700c24"
 
       def install
         bin.install "harbor"
       end
     end
     if Hardware::CPU.arm?
-      url "https://github.com/bupd/harbor-cli/releases/download/v0.0.5/harbor_0.0.5_darwin_arm64.tar.gz"
-      sha256 "c269553f2ea23652923f4813695cf496ac4981ac8f219b72389711142be62a83"
+      url "https://github.com/bupd/harbor-cli/releases/download/v0.0.9/harbor_0.0.9_darwin_arm64.tar.gz"
+      sha256 "5a6b3053e3ac8ca7a17a006d409dda40a8ff459ed55fcaf60dc5fdc0096ecc3f"
 
       def install
         bin.install "harbor"
@@ -29,8 +29,8 @@ class HarborCli < Formula
   on_linux do
     if Hardware::CPU.intel?
       if Hardware::CPU.is_64_bit?
-        url "https://github.com/bupd/harbor-cli/releases/download/v0.0.5/harbor_0.0.5_linux_amd64.tar.gz"
-        sha256 "b57a3a94a60242bbb6b078b64fc8873e630d37a27b3760041b0fc80f841e7526"
+        url "https://github.com/bupd/harbor-cli/releases/download/v0.0.9/harbor_0.0.9_linux_amd64.tar.gz"
+        sha256 "7a7d95f8a5389385ffaae77f47d9d2deb72968990497257df5b683215c19e85a"
 
         def install
           bin.install "harbor"
@@ -39,8 +39,8 @@ class HarborCli < Formula
     end
     if Hardware::CPU.arm?
       if Hardware::CPU.is_64_bit?
-        url "https://github.com/bupd/harbor-cli/releases/download/v0.0.5/harbor_0.0.5_linux_arm64.tar.gz"
-        sha256 "96052fcd64734218bdab61c1c6a514dd380375025c9f7f78ed6d35bc9001f49a"
+        url "https://github.com/bupd/harbor-cli/releases/download/v0.0.9/harbor_0.0.9_linux_arm64.tar.gz"
+        sha256 "927ec486ac882883d85dddaa37c83b2bfe9009e653b97d77f23cf5510bfa13ff"
 
         def install
           bin.install "harbor"
