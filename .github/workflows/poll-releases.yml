@@ -1,0 +1,53 @@
+name: Poll Release & Update
+
+on:
+  schedule:
+    - cron: "0 */3 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: "Checkout Repo"
+        uses: actions/checkout@v4
+
+      - name: "Check last synced version"
+        id: check_version
+        run: |
+          LAST_VERSION=$(cat .last_synced_version 2>/dev/null || echo "none")
+          echo "last=$LAST_VERSION" >> $GITHUB_OUTPUT
+
+      - name: "Get latest goharbor/harbor-cli release"
+        id: release
+        run: |
+          tag=$(curl -s https://api.github.com/repos/nucleofusion/harbor-cli/releases/latest | jq -r .tag_name)
+          echo "tag=$tag" >> $GITHUB_OUTPUT
+
+      - name: Compare versions
+        if: steps.check_version.outputs.last != steps.release.outputs.tag
+        run: |
+          echo "New release found: ${{ steps.release.outputs.tag }}"
+
+      - name: Update version record
+        if: steps.check_version.outputs.last != steps.release.outputs.tag
+        run: echo "${{ steps.release.outputs.tag }}" > .last_synced_version
+
+      - name: Download formula
+        if: steps.check_version.outputs.last != steps.release.outputs.tag
+        run: |
+          curl -L \
+            "https://github.com/nucleofusion/harbor-cli/releases/download/${{ steps.release.outputs.tag }}/harbor-cli.rb" \
+            -o ./harbor-cli.rb
+
+      - name: Commit and push changes
+        if: steps.check_version.outputs.last != steps.release.outputs.tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add ./harbor-cli.rb
+          git commit -m "Updating for harbor-cli ${{ steps.release.outputs.tag }}" || echo "No changes"
+          git push
+
