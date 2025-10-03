@@ -38,9 +38,7 @@ jobs:
       - name: Download formula
         if: steps.check_version.outputs.last != steps.release.outputs.tag
         run: |
-          curl -L \
-            "https://github.com/nucleofusion/harbor-cli/releases/download/${{ steps.release.outputs.tag }}/harbor-cli.rb" \
-            -o ./harbor-cli.rb
+          curl -L https://github.com/nucleofusion/harbor-cli/releases/download/${{ steps.release.outputs.tag }}/Formula.rb -o ./harbor-cli.rb
 
       - name: Commit and push changes
         if: steps.check_version.outputs.last != steps.release.outputs.tag
