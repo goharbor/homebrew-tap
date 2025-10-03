@@ -47,7 +47,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add ./harbor-cli.rb
+          git add .
           git commit -m "Updating for harbor-cli ${{ steps.release.outputs.tag }}" || echo "No changes"
           git push
 
