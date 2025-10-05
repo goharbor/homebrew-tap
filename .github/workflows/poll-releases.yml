@@ -23,7 +23,7 @@ jobs:
       - name: "Get latest goharbor/harbor-cli release"
         id: release
         run: |
-          tag=$(curl -s https://api.github.com/repos/nucleofusion/harbor-cli/releases/latest | jq -r .tag_name)
+          tag=$(curl -s https://api.github.com/repos/goharbor/harbor-cli/releases/latest | jq -r .tag_name)
           echo "tag=$tag" >> $GITHUB_OUTPUT
 
       - name: Compare versions
@@ -38,7 +38,7 @@ jobs:
       - name: Download formula
         if: steps.check_version.outputs.last != steps.release.outputs.tag
         run: |
-          curl -L https://github.com/nucleofusion/harbor-cli/releases/download/${{ steps.release.outputs.tag }}/Formula.rb -o ./harbor-cli.rb
+          curl -L https://github.com/goharbor/harbor-cli/releases/download/${{ steps.release.outputs.tag }}/Formula.rb -o ./harbor-cli.rb
 
       - name: Commit and push changes
         if: steps.check_version.outputs.last != steps.release.outputs.tag
