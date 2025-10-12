@@ -23,8 +23,8 @@ jobs:
       - name: "get latest goharbor/harbor-cli release"
         id: release
         run: |
-          tag=$(curl -s https://api.github.com/repos/goharbor/harbor-cli/releases/latest | jq -r .tag_name)
-          echo "tag=$tag" >> $github_output
+          tag=$(curl -s https://api.github.com/repos/nucleofusion/harbor-cli/releases/latest | jq -r .tag_name)
+          echo "tag=$tag" >> $GITHUB_OUTPUT
 
       - name: compare versions
         if: steps.check_version.outputs.last != steps.release.outputs.tag
@@ -55,9 +55,9 @@ jobs:
           arm={{steps.release.sha.arm}}
 
           sed -i.bak -e \
-            -e "s|(url \".*darwin_amd64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/v${version}/harbor-cli_v${version}_darwin_amd64\.tar\.gz\"|" \
+            -e "s|(url \".*darwin_amd64\.tar\.gz\")|url \"https://github.com/nucleofusion/harbor-cli/releases/download/v${version}/harbor-cli_v${version}_darwin_amd64\.tar\.gz\"|" \
             -e "s|(sha256 \".*\" # amd64)|sha256 \"${amd_sha}\" # amd64|" \
-            -e "s|(url \".*darwin_arm64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/v${version}/harbor-cli_v${version}_darwin_arm64\.tar\.gz\"|" \
+            -e "s|(url \".*darwin_arm64\.tar\.gz\")|url \"https://github.com/nucleofusion/harbor-cli/releases/download/v${version}/harbor-cli_v${version}_darwin_arm64\.tar\.gz\"|" \
             -e "s|(sha256 \".*\" # arm64)|sha256 \"${arm_sha}\" # arm64|" \
             -e "s|(version \".*\")|version \"${version}\"|" \
             harbor-cli.rb
