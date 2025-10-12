@@ -1,4 +1,4 @@
-name: Poll Release & Update
+name: poll release & update
 
 on:
   schedule:
@@ -11,41 +11,65 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: "Checkout Repo"
+      - name: "checkout repo"
         uses: actions/checkout@v4
 
-      - name: "Check last synced version"
+      - name: "check last synced version"
         id: check_version
         run: |
-          LAST_VERSION=$(cat .last_synced_version 2>/dev/null || echo "none")
-          echo "last=$LAST_VERSION" >> $GITHUB_OUTPUT
+          last_version=$(cat .last_synced_version 2>/dev/null || echo "none")
+          echo "last=$last_version" >> $GITHUB_OUTPUT
 
-      - name: "Get latest goharbor/harbor-cli release"
+      - name: "get latest goharbor/harbor-cli release"
         id: release
         run: |
           tag=$(curl -s https://api.github.com/repos/goharbor/harbor-cli/releases/latest | jq -r .tag_name)
-          echo "tag=$tag" >> $GITHUB_OUTPUT
+          echo "tag=$tag" >> $github_output
 
-      - name: Compare versions
+      - name: compare versions
         if: steps.check_version.outputs.last != steps.release.outputs.tag
         run: |
-          echo "New release found: ${{ steps.release.outputs.tag }}"
+          echo "new release found: ${{ steps.release.outputs.tag }}"
 
-      - name: Update version record
-        if: steps.check_version.outputs.last != steps.release.outputs.tag
-        run: echo "${{ steps.release.outputs.tag }}" > .last_synced_version
-
-      - name: Download formula
+      - name: downloading checksum.txt
         if: steps.check_version.outputs.last != steps.release.outputs.tag
         run: |
-          curl -L https://github.com/goharbor/harbor-cli/releases/download/${{ steps.release.outputs.tag }}/Formula.rb -o ./harbor-cli.rb
+          gh release download ${{ steps.release.outputs.tag }} \
+            --repo nucleofusion/harbor-cli \
+            --pattern "checksum.txt"
 
-      - name: Commit and push changes
+      - name: extracting shasum
+        if: steps.check_version.outputs.last != steps.release.outputs.tag
+        id: sha
+        run: |
+          amd=$(grep 'harbor-cli_v[0-9.]\+_darwin_amd64\.tar\.gz' dist/checksum.txt | awk '{print $1}')
+          arm=$(grep 'harbor-cli_v[0-9.]\+_darwin_arm64\.tar\.gz' dist/checksum.txt | awk '{print $1}')
+          echo "amd=${amd}" >> $github_output
+          echo "arm=${arm}" >> $github_output
+
+      - name: update brew formula
+        if: steps.check_version.outputs.last != steps.release.outputs.tag
+        run: |
+          version={{steps.release.outputs.tag}}
+          amd={{steps.release.sha.amd}}
+          arm={{steps.release.sha.arm}}
+
+          sed -i.bak -e \
+            -e "s|(url \".*darwin_amd64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/v${version}/harbor-cli_v${version}_darwin_amd64\.tar\.gz\"|" \
+            -e "s|(sha256 \".*\" # amd64)|sha256 \"${amd_sha}\" # amd64|" \
+            -e "s|(url \".*darwin_arm64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/v${version}/harbor-cli_v${version}_darwin_arm64\.tar\.gz\"|" \
+            -e "s|(sha256 \".*\" # arm64)|sha256 \"${arm_sha}\" # arm64|" \
+            -e "s|(version \".*\")|version \"${version}\"|" \
+            harbor-cli.rb
+
+          rm -f harbor-cli.rb.bak
+
+      - name: commit and push changes
         if: steps.check_version.outputs.last != steps.release.outputs.tag
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "Updating for harbor-cli ${{ steps.release.outputs.tag }}" || echo "No changes"
+          git commit -m "updating for harbor-cli ${{ steps.release.outputs.tag }}" || echo "no changes"
           git push
 
