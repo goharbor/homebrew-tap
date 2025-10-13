@@ -45,8 +45,8 @@ jobs:
         if: steps.check_version.outputs.last != steps.release.outputs.tag
         id: sha
         run: |
-          amd=$(grep 'harbor-cli_v[0-9.]\+_darwin_amd64\.tar\.gz' dist/checksum.txt | awk '{print $1}')
-          arm=$(grep 'harbor-cli_v[0-9.]\+_darwin_arm64\.tar\.gz' dist/checksum.txt | awk '{print $1}')
+          amd=$(grep 'harbor-cli_v[0-9.]\+_darwin_amd64\.tar\.gz' checksum.txt | awk '{print $1}')
+          arm=$(grep 'harbor-cli_v[0-9.]\+_darwin_arm64\.tar\.gz' checksum.txt | awk '{print $1}')
           echo "amd=${amd}" >> $github_output
           echo "arm=${arm}" >> $github_output
 
