@@ -58,10 +58,10 @@ jobs:
           arm={{steps.release.sha.arm}}
 
           sed -i.bak \
-            -e "s|(url \".*darwin_amd64\.tar\.gz\")|url \"https://github.com/nucleofusion/harbor-cli/releases/download/v${version}/harbor-cli_v${version}_darwin_amd64\.tar\.gz\"|" \
-            -e "s|(sha256 \".*\" # amd64)|sha256 \"${amd}\" # amd64|" \
-            -e "s|(url \".*darwin_arm64\.tar\.gz\")|url \"https://github.com/nucleofusion/harbor-cli/releases/download/v${version}/harbor-cli_v${version}_darwin_arm64\.tar\.gz\"|" \
-            -e "s|(sha256 \".*\" # arm64)|sha256 \"${arm}\" # arm64|" \
+            -E "s|(url \".*darwin_amd64\.tar\.gz\")|url \"https://github.com/nucleofusion/harbor-cli/releases/download/v${version}/harbor-cli_${version}_darwin_amd64\.tar\.gz\"|" \
+            -e "s|(sha256 \".*\" # amd64|sha256 \"${amd}\" # amd64|" \
+            -e "s|(url \".*darwin_arm64\.tar\.gz\")|url \"https://github.com/nucleofusion/harbor-cli/releases/download/v${version}/harbor-cli_${version}_darwin_arm64\.tar\.gz\"|" \
+            -e "s|(sha256 \".*\" # arm64|sha256 \"${arm}\" # arm64|" \
             -e "s|(version \".*\")|version \"${version}\"|" \
             harbor-cli.rb
 
