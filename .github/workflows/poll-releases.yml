@@ -53,9 +53,9 @@ jobs:
       - name: update brew formula
         if: steps.check_version.outputs.last != steps.release.outputs.tag
         run: |
-          version={{steps.release.outputs.tag}}
-          amd={{steps.release.sha.amd}}
-          arm={{steps.release.sha.arm}}
+          version=${{steps.release.outputs.tag}}
+          amd=${{steps.release.sha.amd}}
+          arm=${{steps.release.sha.arm}}
 
           sed -i.bak -E \
             -e "s|(url \".*darwin_amd64\.tar\.gz\")|url \"https://github.com/nucleofusion/harbor-cli/releases/download/v${version}/harbor-cli_${version}_darwin_amd64\.tar\.gz\"|" \
