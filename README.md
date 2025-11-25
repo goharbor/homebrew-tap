@@ -1,7 +1,7 @@
 ![image-removebg-preview](https://github.com/user-attachments/assets/22aac27e-31b8-42dc-8f0a-6ff46f2d9d3b)
 
 ## How to install?
-Install `harbor-cli` CLI on macOS using the following command:
+Install `harbor-cli` CLI on macOS/Linux using the following command:
 
 ```sh
 brew install goharbor/tap/harbor-cli
