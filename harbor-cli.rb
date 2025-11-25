@@ -5,20 +5,20 @@
 class HarborCli < Formula
   desc "Harbor CLI for interacting with Harbor registry"
   homepage "https://goharbor.io"
-  version "0.0.12"
+  version "0.0.15"
 
   on_macos do
     if Hardware::CPU.intel?
-      url "https://github.com/bupd/harbor-cli/releases/download/v0.0.12/harbor-cli_0.0.12_darwin_amd64.tar.gz"
-      sha256 "1dfc71f9ed1cd8cc7b2cb7593f67a6be98918f637972ac2bca510fc3f4ed0783"
+      url "https://github.com/bupd/harbor-cli/releases/download/v0.0.15/harbor-cli_0.0.15_darwin_amd64.tar.gz"
+      sha256 "4ae6bc99031682c91dae25b642fb9609a2a7622f4866268cac7ffee36d2138e5"
 
       def install
         bin.install "harbor"
       end
     end
     if Hardware::CPU.arm?
-      url "https://github.com/bupd/harbor-cli/releases/download/v0.0.12/harbor-cli_0.0.12_darwin_arm64.tar.gz"
-      sha256 "43e44daf231af6025b8faa1ebfb6874ad07e0860ffab60e9caf6b5e9cc499e71"
+      url "https://github.com/bupd/harbor-cli/releases/download/v0.0.15/harbor-cli_0.0.15_darwin_arm64.tar.gz"
+      sha256 "98cee2abae72413df5cde4b72be7def19ec72fe2dfe808fafa76dca81065f8b0"
 
       def install
         bin.install "harbor"
@@ -29,8 +29,8 @@ class HarborCli < Formula
   on_linux do
     if Hardware::CPU.intel?
       if Hardware::CPU.is_64_bit?
-        url "https://github.com/bupd/harbor-cli/releases/download/v0.0.12/harbor-cli_0.0.12_linux_amd64.tar.gz"
-        sha256 "80432aa4c6369282f21f9b1c4f65a6524f7ef24b9b4e5407119960324e1a656a"
+        url "https://github.com/bupd/harbor-cli/releases/download/v0.0.15/harbor-cli_0.0.15_linux_amd64.tar.gz"
+        sha256 "ba3d294a00003aab4423fa470f5c3cef719a4bbe4fecc9f8198783e7f662b29a"
 
         def install
           bin.install "harbor"
@@ -39,8 +39,8 @@ class HarborCli < Formula
     end
     if Hardware::CPU.arm?
       if Hardware::CPU.is_64_bit?
-        url "https://github.com/bupd/harbor-cli/releases/download/v0.0.12/harbor-cli_0.0.12_linux_arm64.tar.gz"
-        sha256 "b1f14d94df3547645328dd96a22572523a0d0c8d41ca0695851bc14a65a42379"
+        url "https://github.com/bupd/harbor-cli/releases/download/v0.0.15/harbor-cli_0.0.15_linux_arm64.tar.gz"
+        sha256 "578cfe113369109034bd1fe89edc8e114ddbca671b8035b842716e6b0d5ff096"
 
         def install
           bin.install "harbor"
@@ -50,6 +50,6 @@ class HarborCli < Formula
   end
 
   test do
-    system "#{bin}/harbor", "version"   # Formula test (after install)
+    system "#{bin}/harbor", "version"
   end
 end
