@@ -2,7 +2,7 @@ name: poll release & update
 
 on:
   schedule:
-    - cron: "0 */3 * * *"
+    - cron: "0 */12 * * *"
   workflow_dispatch:
 
 
@@ -26,7 +26,7 @@ jobs:
       - name: "get latest goharbor/harbor-cli release"
         id: release
         run: |
-          tag=$(curl -s https://api.github.com/repos/goharbor/harbor-cli/releases/latest | jq -r .tag_name)
+          tag=$(curl -s https://api.github.com/repos/nucleofusion/harbor-cli/releases/latest | jq -r .tag_name)
           echo "tag=$tag" >> $GITHUB_OUTPUT
 
       - name: compare versions
@@ -38,7 +38,7 @@ jobs:
         if: steps.check_version.outputs.last != steps.release.outputs.tag
         run: |
           gh release download ${{ steps.release.outputs.tag }} \
-            --repo goharbor/harbor-cli \
+            --repo nucleofusion/harbor-cli \
             --pattern "checksums.txt"
 
       - name: extracting shasum
