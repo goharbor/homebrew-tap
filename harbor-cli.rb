@@ -7,7 +7,7 @@ class HarborCli < Formula
   on_macos do
     if Hardware::CPU.intel?
       url "https://github.com/goharbor/harbor-cli/releases/download/v0.0.15/harbor-cli_v0.0.15_darwin_amd64.tar.gz"
-      sha256 "" # amd64
+      sha256 "" # darwin_amd64
 
       def install
         bin.install "harbor"
@@ -15,7 +15,27 @@ class HarborCli < Formula
     end
     if Hardware::CPU.arm?
       url "https://github.com/goharbor/harbor-cli/releases/download/v0.0.15/harbor-cli_v0.0.15_darwin_arm64.tar.gz"
-      sha256 "" # arm64
+      sha256 "" # darwin_arm64
+
+      def install
+        bin.install "harbor"
+      end
+    end
+  end
+
+ on_linux do
+    if Hardware::CPU.intel?
+      url "https://github.com/goharbor/harbor-cli/releases/download/v0.0.15/harbor-cli_v0.0.15_linux_amd64.tar.gz"
+      sha256 "" # linux_amd64
+
+      def install
+        bin.install "harbor"
+      end
+    end
+
+    if Hardware::CPU.arm?
+      url "https://github.com/goharbor/harbor-cli/releases/download/v0.0.15/harbor-cli_v0.0.15_linux_arm64.tar.gz"
+      sha256 "" # linux_arm64
 
       def install
         bin.install "harbor"
