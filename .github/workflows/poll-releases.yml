@@ -26,7 +26,9 @@ jobs:
       - name: "get latest goharbor/harbor-cli release"
         id: release
         run: |
-          tag=$(curl -s https://api.github.com/repos/goharbor/harbor-cli/releases/latest | jq -r .tag_name)
+          ver=$(curl -s https://api.github.com/repos/goharbor/harbor-cli/releases/latest | jq -r .tag_name)
+          tag=${ver#v}
+          echo ${tag}
           echo "tag=$tag" >> $GITHUB_OUTPUT
 
       - name: compare versions
@@ -37,7 +39,7 @@ jobs:
       - name: downloading checksums.txt
         if: steps.check_version.outputs.last != steps.release.outputs.tag
         run: |
-          gh release download ${{ steps.release.outputs.tag }} \
+          gh release download v${{ steps.release.outputs.tag }} \
             --repo goharbor/harbor-cli \
             --pattern "checksums.txt"
 
@@ -45,10 +47,14 @@ jobs:
         if: steps.check_version.outputs.last != steps.release.outputs.tag
         id: sha
         run: |
-          darwin_amd=$(grep 'harbor-cli_[0-9.]\+_darwin_amd64\.tar\.gz' checksums.txt | awk '{print $1}')
-          darwin_arm=$(grep 'harbor-cli_[0-9.]\+_darwin_arm64\.tar\.gz' checksums.txt | awk '{print $1}')
-          linux_amd=$(grep 'harbor-cli_[0-9.]\+_linux_amd64\.tar\.gz' checksums.txt | awk '{print $1}')
-          linux_arm=$(grep 'harbor-cli_[0-9.]\+_linux_arm64\.tar\.gz' checksums.txt | awk '{print $1}')
+          darwin_amd=$(grep 'harbor-cli_[0-9.]\+_darwin_amd64\.tar\.gz$' checksums.txt | awk '{print $1}')
+          darwin_arm=$(grep 'harbor-cli_[0-9.]\+_darwin_arm64\.tar\.gz$' checksums.txt | awk '{print $1}')
+          linux_amd=$(grep 'harbor-cli_[0-9.]\+_linux_amd64\.tar\.gz$' checksums.txt | awk '{print $1}')
+          linux_arm=$(grep 'harbor-cli_[0-9.]\+_linux_arm64\.tar\.gz$' checksums.txt | awk '{print $1}')
+          echo "linux_amd=${linux_amd}"
+          echo "linux_arm=${linux_arm}"
+          echo "darwin_amd=${darwin_amd}"
+          echo "darwin_arm=${darwin_arm}"
           echo "linux_amd=${linux_amd}" >> $GITHUB_OUTPUT
           echo "linux_arm=${linux_arm}" >> $GITHUB_OUTPUT
           echo "darwin_amd=${darwin_amd}" >> $GITHUB_OUTPUT
@@ -64,13 +70,13 @@ jobs:
           darwin_arm=${{steps.sha.outputs.darwin_arm}}
 
           sed -i.bak -E \
-            -e "s|(url \".*darwin_amd64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/${version}/harbor-cli_${version}_darwin_amd64\.tar\.gz\"|" \
+            -e "s|(url \".*darwin_amd64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/v${version}/harbor-cli_${version}_darwin_amd64\.tar\.gz\"|" \
             -e "s|(sha256 \".*\" # darwin_amd64)|sha256 \"${darwin_amd}\" # darwin_amd64|" \
-            -e "s|(url \".*darwin_arm64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/${version}/harbor-cli_${version}_darwin_arm64\.tar\.gz\"|" \
+            -e "s|(url \".*darwin_arm64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/v${version}/harbor-cli_${version}_darwin_arm64\.tar\.gz\"|" \
             -e "s|(sha256 \".*\" # darwin_arm64)|sha256 \"${darwin_arm}\" # darwin_arm64|" \
-            -e "s|(url \".*linux_amd64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/${version}/harbor-cli_${version}_linux_amd64\.tar\.gz\"|" \
+            -e "s|(url \".*linux_amd64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/v${version}/harbor-cli_${version}_linux_amd64\.tar\.gz\"|" \
             -e "s|(sha256 \".*\" # linux_amd64)|sha256 \"${linux_amd}\" # linux_amd64|" \
-            -e "s|(url \".*linux_arm64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/${version}/harbor-cli_${version}_linux_arm64\.tar\.gz\"|" \
+            -e "s|(url \".*linux_arm64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/v${version}/harbor-cli_${version}_linux_arm64\.tar\.gz\"|" \
             -e "s|(sha256 \".*\" # linux_arm64)|sha256 \"${linux_arm}\" # linux_arm64|" \
             -e "s|(version \").*(\")|\1${version}\2|" \
             harbor-cli.rb
