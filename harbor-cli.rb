@@ -2,12 +2,12 @@
 class HarborCli < Formula
   desc "Harbor CLI for interacting with Harbor registry"
   homepage "https://goharbor.io"
-  version "v0.0.0"
+  version "0.0.15"
 
   on_macos do
     if Hardware::CPU.intel?
       url "https://github.com/goharbor/harbor-cli/releases/download/v0.0.15/harbor-cli_0.0.15_darwin_amd64.tar.gz"
-      sha256 "" # darwin_amd64
+      sha256 "4ae6bc99031682c91dae25b642fb9609a2a7622f4866268cac7ffee36d2138e5" # darwin_amd64
 
       def install
         bin.install Dir["**/harbor"] => "harbor"
@@ -15,7 +15,7 @@ class HarborCli < Formula
     end
     if Hardware::CPU.arm?
       url "https://github.com/goharbor/harbor-cli/releases/download/v0.0.15/harbor-cli_0.0.15_darwin_arm64.tar.gz"
-      sha256 "" # darwin_arm64
+      sha256 "98cee2abae72413df5cde4b72be7def19ec72fe2dfe808fafa76dca81065f8b0" # darwin_arm64
 
       def install
         bin.install Dir["**/harbor"] => "harbor"
@@ -26,7 +26,7 @@ class HarborCli < Formula
  on_linux do
     if Hardware::CPU.intel?
       url "https://github.com/goharbor/harbor-cli/releases/download/v0.0.15/harbor-cli_0.0.15_linux_amd64.tar.gz"
-      sha256 "" # linux_amd64
+      sha256 "ba3d294a00003aab4423fa470f5c3cef719a4bbe4fecc9f8198783e7f662b29a" # linux_amd64
 
       def install
         bin.install Dir["**/harbor"] => "harbor"
@@ -35,7 +35,7 @@ class HarborCli < Formula
 
     if Hardware::CPU.arm?
       url "https://github.com/goharbor/harbor-cli/releases/download/v0.0.15/harbor-cli_0.0.15_linux_arm64.tar.gz"
-      sha256 "" # linux_arm64
+      sha256 "578cfe113369109034bd1fe89edc8e114ddbca671b8035b842716e6b0d5ff096" # linux_arm64
 
       def install
         bin.install Dir["**/harbor"] => "harbor"
