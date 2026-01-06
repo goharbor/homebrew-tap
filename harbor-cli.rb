@@ -2,7 +2,7 @@
 class HarborCli < Formula
   desc "Harbor CLI for interacting with Harbor registry"
   homepage "https://goharbor.io"
-  version "v0.0.15"
+  version "v0.0.0"
 
   on_macos do
     if Hardware::CPU.intel?
