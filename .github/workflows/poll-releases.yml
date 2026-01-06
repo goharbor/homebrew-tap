@@ -26,7 +26,9 @@ jobs:
       - name: "get latest goharbor/harbor-cli release"
         id: release
         run: |
-          tag=$(curl -s https://api.github.com/repos/goharbor/harbor-cli/releases/latest | jq -r .tag_name)
+          ver=$(curl -s https://api.github.com/repos/goharbor/harbor-cli/releases/latest | jq -r .tag_name)
+          tag=${ver#v}
+          echo ${tag}
           echo "tag=$tag" >> $GITHUB_OUTPUT
 
       - name: compare versions
