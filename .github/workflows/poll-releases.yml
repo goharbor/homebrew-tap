@@ -39,7 +39,7 @@ jobs:
       - name: downloading checksums.txt
         if: steps.check_version.outputs.last != steps.release.outputs.tag
         run: |
-          gh release download ${{ steps.release.outputs.tag }} \
+          gh release download v${{ steps.release.outputs.tag }} \
             --repo goharbor/harbor-cli \
             --pattern "checksums.txt"
 
