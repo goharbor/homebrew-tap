@@ -45,10 +45,10 @@ jobs:
         if: steps.check_version.outputs.last != steps.release.outputs.tag
         id: sha
         run: |
-          darwin_amd=$(grep 'harbor-cli_v[0-9.]\+_darwin_amd64\.tar\.gz' checksums.txt | awk '{print $1}')
-          darwin_arm=$(grep 'harbor-cli_v[0-9.]\+_darwin_arm64\.tar\.gz' checksums.txt | awk '{print $1}')
-          linux_amd=$(grep 'harbor-cli_v[0-9.]\+_linux_amd64\.tar\.gz' checksums.txt | awk '{print $1}')
-          linux_arm=$(grep 'harbor-cli_v[0-9.]\+_linux_arm64\.tar\.gz' checksums.txt | awk '{print $1}')
+          darwin_amd=$(grep 'harbor-cli_[0-9.]\+_darwin_amd64\.tar\.gz' checksums.txt | awk '{print $1}')
+          darwin_arm=$(grep 'harbor-cli_[0-9.]\+_darwin_arm64\.tar\.gz' checksums.txt | awk '{print $1}')
+          linux_amd=$(grep 'harbor-cli_[0-9.]\+_linux_amd64\.tar\.gz' checksums.txt | awk '{print $1}')
+          linux_arm=$(grep 'harbor-cli_[0-9.]\+_linux_arm64\.tar\.gz' checksums.txt | awk '{print $1}')
           echo "linux_amd=${linux_amd}" >> $GITHUB_OUTPUT
           echo "linux_arm=${linux_arm}" >> $GITHUB_OUTPUT
           echo "darwin_amd=${darwin_amd}" >> $GITHUB_OUTPUT
