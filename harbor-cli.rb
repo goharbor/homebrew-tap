@@ -10,7 +10,7 @@ class HarborCli < Formula
       sha256 "" # darwin_amd64
 
       def install
-        bin.install "harbor"
+        bin.install Dir["**/harbor"] => "harbor"
       end
     end
     if Hardware::CPU.arm?
@@ -18,7 +18,7 @@ class HarborCli < Formula
       sha256 "" # darwin_arm64
 
       def install
-        bin.install "harbor"
+        bin.install Dir["**/harbor"] => "harbor"
       end
     end
   end
@@ -29,7 +29,7 @@ class HarborCli < Formula
       sha256 "" # linux_amd64
 
       def install
-        bin.install "harbor"
+        bin.install Dir["**/harbor"] => "harbor"
       end
     end
 
@@ -38,7 +38,7 @@ class HarborCli < Formula
       sha256 "" # linux_arm64
 
       def install
-        bin.install "harbor"
+        bin.install Dir["**/harbor"] => "harbor"
       end
     end
   end
