@@ -1,0 +1,88 @@
+name: poll release & update
+
+on:
+  schedule:
+    - cron: "0 */12 * * *"
+  workflow_dispatch:
+
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{github.token}}
+    steps:
+      - name: "checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "check last synced version"
+        id: check_version
+        run: |
+          last_version=$(cat .last_synced_version 2>/dev/null || echo "none")
+          echo "last=$last_version" >> $GITHUB_OUTPUT
+
+      - name: "get latest goharbor/harbor-cli release"
+        id: release
+        run: |
+          tag=$(curl -s https://api.github.com/repos/goharbor/harbor-cli/releases/latest | jq -r .tag_name)
+          echo "tag=$tag" >> $GITHUB_OUTPUT
+
+      - name: compare versions
+        if: steps.check_version.outputs.last != steps.release.outputs.tag
+        run: |
+          echo "new release found: ${{ steps.release.outputs.tag }}"
+
+      - name: downloading checksums.txt
+        if: steps.check_version.outputs.last != steps.release.outputs.tag
+        run: |
+          gh release download ${{ steps.release.outputs.tag }} \
+            --repo goharbor/harbor-cli \
+            --pattern "checksums.txt"
+
+      - name: extracting shasum
+        if: steps.check_version.outputs.last != steps.release.outputs.tag
+        id: sha
+        run: |
+          darwin_amd=$(grep 'harbor-cli_v[0-9.]\+_darwin_amd64\.tar\.gz' checksums.txt | awk '{print $1}')
+          darwin_arm=$(grep 'harbor-cli_v[0-9.]\+_darwin_arm64\.tar\.gz' checksums.txt | awk '{print $1}')
+          linux_amd=$(grep 'harbor-cli_v[0-9.]\+_linux_amd64\.tar\.gz' checksums.txt | awk '{print $1}')
+          linux_arm=$(grep 'harbor-cli_v[0-9.]\+_linux_arm64\.tar\.gz' checksums.txt | awk '{print $1}')
+          echo "linux_amd=${linux_amd}" >> $GITHUB_OUTPUT
+          echo "linux_arm=${linux_arm}" >> $GITHUB_OUTPUT
+          echo "darwin_amd=${darwin_amd}" >> $GITHUB_OUTPUT
+          echo "darwin_arm=${darwin_arm}" >> $GITHUB_OUTPUT
+
+      - name: update brew formula
+        if: steps.check_version.outputs.last != steps.release.outputs.tag
+        run: |
+          version=${{steps.release.outputs.tag}}
+          linux_amd=${{steps.sha.outputs.linux_amd}}
+          linux_arm=${{steps.sha.outputs.linux_arm}}
+          darwin_amd=${{steps.sha.outputs.darwin_amd}}
+          darwin_arm=${{steps.sha.outputs.darwin_arm}}
+
+          sed -i.bak -E \
+            -e "s|(url \".*darwin_amd64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/${version}/harbor-cli_${version}_darwin_amd64\.tar\.gz\"|" \
+            -e "s|(sha256 \".*\" # darwin_amd64)|sha256 \"${darwin_amd}\" # darwin_amd64|" \
+            -e "s|(url \".*darwin_arm64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/${version}/harbor-cli_${version}_darwin_arm64\.tar\.gz\"|" \
+            -e "s|(sha256 \".*\" # darwin_arm64)|sha256 \"${darwin_arm}\" # darwin_arm64|" \
+            -e "s|(url \".*linux_amd64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/${version}/harbor-cli_${version}_linux_amd64\.tar\.gz\"|" \
+            -e "s|(sha256 \".*\" # linux_amd64)|sha256 \"${linux_amd}\" # linux_amd64|" \
+            -e "s|(url \".*linux_arm64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/${version}/harbor-cli_${version}_linux_arm64\.tar\.gz\"|" \
+            -e "s|(sha256 \".*\" # linux_arm64)|sha256 \"${linux_arm}\" # linux_arm64|" \
+            -e "s|(version \").*(\")|\1${version}\2|" \
+            harbor-cli.rb
+
+          rm -f harbor-cli.rb.bak
+
+      - name: commit and push changes
+        if: steps.check_version.outputs.last != steps.release.outputs.tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add harbor-cli.rb  
+          git commit -m "updating for harbor-cli ${{ steps.release.outputs.tag }}" || echo "no changes"
+          git push
+
