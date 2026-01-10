@@ -1,5 +1,7 @@
 name: poll release & update
-
+concurrency:
+  group: harbor-cli-formula-update
+  cancel-in-progress: true
 on:
   schedule:
     - cron: "0 */12 * * *"
@@ -88,6 +90,16 @@ jobs:
 
           rm -f harbor-cli.rb.bak
 
+      - name: sanity check formula
+        run: ruby -c harbor-cli.rb
+
+      - name: fail on merge conflicts
+        run: |
+          if grep -R "<<<<<<<" .; then
+            echo "Merge conflict markers found"
+            exit 1
+          fi
+
       - name: commit and push changes
         if: steps.check_version.outputs.last != steps.release.outputs.tag
         run: |
@@ -95,5 +107,4 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add harbor-cli.rb  
           git commit -m "updating for harbor-cli ${{ steps.release.outputs.tag }}" || echo "no changes"
-          git push
-
+          git push --force-with-lease
