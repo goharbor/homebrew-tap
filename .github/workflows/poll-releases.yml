@@ -17,6 +17,11 @@ jobs:
       - name: "checkout repo"
         uses: actions/checkout@v4
 
+      - name: sync with remote
+        run: |
+          git fetch origin
+          git rebase origin/main
+
       - name: "check last synced version"
         id: check_version
         run: |
@@ -26,7 +31,7 @@ jobs:
       - name: "get latest goharbor/harbor-cli release"
         id: release
         run: |
-          ver=$(curl -s https://api.github.com/repos/goharbor/harbor-cli/releases/latest | jq -r .tag_name)
+          ver=$(curl -s https://api.github.com/repos/nucleofusion/harbor-cli/releases/latest | jq -r .tag_name)
           tag=${ver#v}
           echo ${tag}
           echo "tag=$tag" >> $GITHUB_OUTPUT
@@ -40,7 +45,7 @@ jobs:
         if: steps.check_version.outputs.last != steps.release.outputs.tag
         run: |
           gh release download v${{ steps.release.outputs.tag }} \
-            --repo goharbor/harbor-cli \
+            --repo nucleofusion/harbor-cli \
             --pattern "checksums.txt"
 
       - name: extracting shasum
