@@ -1,5 +1,7 @@
 name: poll release & update
-
+concurrency:
+  group: harbor-cli-formula-update
+  cancel-in-progress: true
 on:
   schedule:
     - cron: "0 */12 * * *"
@@ -16,6 +18,11 @@ jobs:
     steps:
       - name: "checkout repo"
         uses: actions/checkout@v4
+
+      - name: sync with remote
+        run: |
+          git fetch origin
+          git rebase origin/main
 
       - name: "check last synced version"
         id: check_version
@@ -83,6 +90,11 @@ jobs:
 
           rm -f harbor-cli.rb.bak
 
+      - name: sanity check formula
+        run: |
+          ruby -c harbor-cli.rb
+          cat harbor-cli.rb
+
       - name: commit and push changes
         if: steps.check_version.outputs.last != steps.release.outputs.tag
         run: |
@@ -90,5 +102,4 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add harbor-cli.rb  
           git commit -m "updating for harbor-cli ${{ steps.release.outputs.tag }}" || echo "no changes"
-          git push
-
+          git push --force-with-lease
