@@ -33,7 +33,7 @@ jobs:
       - name: "get latest goharbor/harbor-cli release"
         id: release
         run: |
-          ver=$(curl -s https://api.github.com/repos/nucleofusion/harbor-cli/releases/latest | jq -r .tag_name)
+          ver=$(curl -s https://api.github.com/repos/goharbor/harbor-cli/releases/latest | jq -r .tag_name)
           tag=${ver#v}
           echo ${tag}
           echo "tag=$tag" >> $GITHUB_OUTPUT
@@ -47,7 +47,7 @@ jobs:
         if: steps.check_version.outputs.last != steps.release.outputs.tag
         run: |
           gh release download v${{ steps.release.outputs.tag }} \
-            --repo nucleofusion/harbor-cli \
+            --repo goharbor/harbor-cli \
             --pattern "checksums.txt"
 
       - name: extracting shasum
@@ -77,13 +77,13 @@ jobs:
           darwin_arm=${{steps.sha.outputs.darwin_arm}}
 
           sed -i.bak -E \
-            -e "s|(url \".*darwin_amd64\.tar\.gz\")|url \"https://github.com/nucleofusion/harbor-cli/releases/download/v${version}/harbor-cli_${version}_darwin_amd64\.tar\.gz\"|" \
+            -e "s|(url \".*darwin_amd64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/v${version}/harbor-cli_${version}_darwin_amd64\.tar\.gz\"|" \
             -e "s|(sha256 \".*\" # darwin_amd64)|sha256 \"${darwin_amd}\" # darwin_amd64|" \
-            -e "s|(url \".*darwin_arm64\.tar\.gz\")|url \"https://github.com/nucleofusion/harbor-cli/releases/download/v${version}/harbor-cli_${version}_darwin_arm64\.tar\.gz\"|" \
+            -e "s|(url \".*darwin_arm64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/v${version}/harbor-cli_${version}_darwin_arm64\.tar\.gz\"|" \
             -e "s|(sha256 \".*\" # darwin_arm64)|sha256 \"${darwin_arm}\" # darwin_arm64|" \
-            -e "s|(url \".*linux_amd64\.tar\.gz\")|url \"https://github.com/nucleofusion/harbor-cli/releases/download/v${version}/harbor-cli_${version}_linux_amd64\.tar\.gz\"|" \
+            -e "s|(url \".*linux_amd64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/v${version}/harbor-cli_${version}_linux_amd64\.tar\.gz\"|" \
             -e "s|(sha256 \".*\" # linux_amd64)|sha256 \"${linux_amd}\" # linux_amd64|" \
-            -e "s|(url \".*linux_arm64\.tar\.gz\")|url \"https://github.com/nucleofusion/harbor-cli/releases/download/v${version}/harbor-cli_${version}_linux_arm64\.tar\.gz\"|" \
+            -e "s|(url \".*linux_arm64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/v${version}/harbor-cli_${version}_linux_arm64\.tar\.gz\"|" \
             -e "s|(sha256 \".*\" # linux_arm64)|sha256 \"${linux_arm}\" # linux_arm64|" \
             -e "s|(version \").*(\")|\1${version}\2|" \
             harbor-cli.rb
