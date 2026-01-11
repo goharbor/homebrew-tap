@@ -91,7 +91,9 @@ jobs:
           rm -f harbor-cli.rb.bak
 
       - name: sanity check formula
-        run: ruby -c harbor-cli.rb
+        run: |
+          ruby -c harbor-cli.rb
+          cat harbor-cli.rb
 
       - name: fail on merge conflicts
         run: |
