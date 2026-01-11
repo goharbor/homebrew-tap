@@ -77,13 +77,13 @@ jobs:
           darwin_arm=${{steps.sha.outputs.darwin_arm}}
 
           sed -i.bak -E \
-            -e "s|(url \".*darwin_amd64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/v${version}/harbor-cli_${version}_darwin_amd64\.tar\.gz\"|" \
+            -e "s|(url \".*darwin_amd64\.tar\.gz\")|url \"https://github.com/nucleofusion/harbor-cli/releases/download/v${version}/harbor-cli_${version}_darwin_amd64\.tar\.gz\"|" \
             -e "s|(sha256 \".*\" # darwin_amd64)|sha256 \"${darwin_amd}\" # darwin_amd64|" \
-            -e "s|(url \".*darwin_arm64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/v${version}/harbor-cli_${version}_darwin_arm64\.tar\.gz\"|" \
+            -e "s|(url \".*darwin_arm64\.tar\.gz\")|url \"https://github.com/nucleofusion/harbor-cli/releases/download/v${version}/harbor-cli_${version}_darwin_arm64\.tar\.gz\"|" \
             -e "s|(sha256 \".*\" # darwin_arm64)|sha256 \"${darwin_arm}\" # darwin_arm64|" \
-            -e "s|(url \".*linux_amd64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/v${version}/harbor-cli_${version}_linux_amd64\.tar\.gz\"|" \
+            -e "s|(url \".*linux_amd64\.tar\.gz\")|url \"https://github.com/nucleofusion/harbor-cli/releases/download/v${version}/harbor-cli_${version}_linux_amd64\.tar\.gz\"|" \
             -e "s|(sha256 \".*\" # linux_amd64)|sha256 \"${linux_amd}\" # linux_amd64|" \
-            -e "s|(url \".*linux_arm64\.tar\.gz\")|url \"https://github.com/goharbor/harbor-cli/releases/download/v${version}/harbor-cli_${version}_linux_arm64\.tar\.gz\"|" \
+            -e "s|(url \".*linux_arm64\.tar\.gz\")|url \"https://github.com/nucleofusion/harbor-cli/releases/download/v${version}/harbor-cli_${version}_linux_arm64\.tar\.gz\"|" \
             -e "s|(sha256 \".*\" # linux_arm64)|sha256 \"${linux_arm}\" # linux_arm64|" \
             -e "s|(version \").*(\")|\1${version}\2|" \
             harbor-cli.rb
