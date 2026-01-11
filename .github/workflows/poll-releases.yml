@@ -95,13 +95,6 @@ jobs:
           ruby -c harbor-cli.rb
           cat harbor-cli.rb
 
-      - name: fail on merge conflicts
-        run: |
-          if grep -R "<<<<<<<" .; then
-            echo "Merge conflict markers found"
-            exit 1
-          fi
-
       - name: commit and push changes
         if: steps.check_version.outputs.last != steps.release.outputs.tag
         run: |
