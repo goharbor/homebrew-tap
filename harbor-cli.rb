@@ -2,20 +2,20 @@
 class HarborCli < Formula
   desc "Harbor CLI for interacting with Harbor registry"
   homepage "https://goharbor.io"
-  version "0.0.22"
+  version "0.0.23"
 
   on_macos do
     if Hardware::CPU.intel?
-      url "https://github.com/goharbor/harbor-cli/releases/download/v0.0.22/harbor-cli_0.0.22_darwin_amd64.tar.gz"
-      sha256 "0bd4164fb97b0b15ef3a571775cc42604c87949f2e3edc83a69ab4861b51e20d" # darwin_amd64
+      url "https://github.com/goharbor/harbor-cli/releases/download/v0.0.23/harbor-cli_0.0.23_darwin_amd64.tar.gz"
+      sha256 "f099b6dcaa3359aeffbd88fd1424771aee71c17e85572d2c588cf38cc1c7a031" # darwin_amd64
 
       def install
         bin.install "harbor-cli"
       end
     end
     if Hardware::CPU.arm?
-      url "https://github.com/goharbor/harbor-cli/releases/download/v0.0.22/harbor-cli_0.0.22_darwin_arm64.tar.gz"
-      sha256 "d567cc08108f61f6a2782018e1a5be7bcd9d971aafcff38d4d42a4c66589a4c1" # darwin_arm64
+      url "https://github.com/goharbor/harbor-cli/releases/download/v0.0.23/harbor-cli_0.0.23_darwin_arm64.tar.gz"
+      sha256 "937492099ed6ae67307eb0f04fd55968e228f4c6a547718abfb1a8bbef4a1ca7" # darwin_arm64
 
       def install
         bin.install "harbor-cli"
@@ -25,8 +25,8 @@ class HarborCli < Formula
 
  on_linux do
     if Hardware::CPU.intel?
-      url "https://github.com/goharbor/harbor-cli/releases/download/v0.0.22/harbor-cli_0.0.22_linux_amd64.tar.gz"
-      sha256 "886bc2ed9c65daa77fe63713b111284f8f61a998096880e747215381b91f206e" # linux_amd64
+      url "https://github.com/goharbor/harbor-cli/releases/download/v0.0.23/harbor-cli_0.0.23_linux_amd64.tar.gz"
+      sha256 "e70a4b3729fbf4b81809002221b91c67b6380f43b552908373cea21ec04ea947" # linux_amd64
 
       def install
         bin.install "harbor-cli"
@@ -34,8 +34,8 @@ class HarborCli < Formula
     end
 
     if Hardware::CPU.arm?
-      url "https://github.com/goharbor/harbor-cli/releases/download/v0.0.22/harbor-cli_0.0.22_linux_arm64.tar.gz"
-      sha256 "d4942b7f3c3e4eff0830940969a798c976602a6fed1c56545e806b3c24e970e1" # linux_arm64
+      url "https://github.com/goharbor/harbor-cli/releases/download/v0.0.23/harbor-cli_0.0.23_linux_arm64.tar.gz"
+      sha256 "574bca34c960032c8b336ef31f3219b64cadce30d9ba5be53d86d4efa436068a" # linux_arm64
 
       def install
         bin.install "harbor-cli"
